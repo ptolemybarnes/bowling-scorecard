@@ -1,0 +1,16 @@
+{
+  "name": "bowling-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jasmine-node spec/"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "bower": "^1.5.2",
+    "grunt": "^0.4.5",
+    "jasmine-node": "^1.14.5"
+  }
+}
