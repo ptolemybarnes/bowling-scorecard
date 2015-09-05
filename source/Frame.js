@@ -15,25 +15,36 @@ var Frame = (function() {
 
   Frame.prototype.calculateScore = function(nextFrame, frameAfterNext) {
     var total = 0;
-    this.rolls.forEach(function(score) { total += score });
-    if (this.isSpare()) {
-      total += nextFrame.rolls[0];
-    }
-    if (this.isStrike()) {
-      total += (nextFrame.rolls[0] + nextFrame.rolls[1])
-    }
+    total += calculateBaseScore(this);
+    total += calculateBonuses(this, nextFrame, frameAfterNext);
+
     return total;
   };
 
-  Frame.prototype.isSpare = function() {
-    return (countNumberOfRolls(this.rolls) > 1 && calculateBaseScore(this) === 10);
-  };
-
-  Frame.prototype.isStrike = function() {
-    return (countNumberOfRolls(this.rolls) == 1 && calculateBaseScore(this) === 10);
+  Frame.prototype.getRollsList = function() {
+    return this.rolls.slice(0, this.rolls.length);
+  }
+  
+  // private methods.
+  
+  function calculateBonuses(frame, nextFrame, frameAfterNext) {
+    var bonusTotal = 0;
+    if (isSpare(frame)) {
+      bonusTotal += nextFrame.rolls[0];
+    }
+    if (isStrike(frame)) {
+      bonusTotal += getNextTwoScores(nextFrame, frameAfterNext);
+    }
+    return bonusTotal;
   }
 
-  // private methods.
+  function isSpare(frame) { 
+    return (countNumberOfRolls(frame) > 1 && calculateBaseScore(frame) === 10);
+  };
+
+  function isStrike(frame) {
+    return (countNumberOfRolls(frame) == 1 && calculateBaseScore(frame) === 10);
+  }
 
   function validateRoll(frame, score) {
     if (frame.rolls.length == 2) {
@@ -44,12 +55,17 @@ var Frame = (function() {
     }
   }
 
-  function countNumberOfRolls(rolls) {
-    return rolls.length;
+  function countNumberOfRolls(frame) {
+    return frame.rolls.length;
   }
 
   function calculateBaseScore(frame) {
     return frame.rolls[0] + (frame.rolls[1] || 0);
+  }
+
+  function getNextTwoScores(nextFrame, frameAfterNext) {
+    var rollsList = nextFrame.getRollsList().concat(frameAfterNext.getRollsList());
+    return calculateBaseScore({ rolls: rollsList });
   }
 
   return Frame;

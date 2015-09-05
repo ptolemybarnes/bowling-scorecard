@@ -1,34 +1,64 @@
 
 describe('Frame', function() {
-  var frame;
+  var frame, nextFrame, frameAfterNext;
 
   beforeEach(function() {
-    frame = new Frame();
+    frame          = new Frame();
+    nextFrame      = new Frame();
+    frameAfterNext = new Frame();
   });
 
-  describe('knows its score' , function() {
+  describe('Calculating the score', function() { 
 
-    it('after two rolls', function() {
-      rolls([6, 2]);
+    describe('when it is neither a spare or a strike' , function() {
 
-      expect(frame.calculateScore()).toEqual(8);
+      it('gives a base score', function() {
+        rolls([6, 2]);
+
+        expect(frame.calculateScore(nextFrame, frameAfterNext)).toEqual(8);
+      });
+    
     });
-  
+
+    describe("when it is a spare", function() {
+
+      it('awards itself bonus points equal to the score of the next roll', function() {
+        rolls([5,5]);
+        nextFrame.roll(3);
+        nextFrame.roll(3);
+
+        expect(frame.calculateScore(nextFrame, frameAfterNext)).toEqual(13);
+      });
+
+    });
+
+    describe("when it is a strike followed by a non-strike", function() {
+
+      it('awards itself bonus points equal to the base score of the next frame', function() {
+        rolls([10]);
+        nextFrame.roll(3);
+        nextFrame.roll(3);
+
+        expect(frame.calculateScore(nextFrame, frameAfterNext)).toEqual(16);
+      });
+
+    });
+
+    describe("when it is a strike followed by another strike", function() {
+
+      it('awards itself bonus points equal to the base score of the next two frames', function() {
+        frame.roll(10);
+        nextFrame.roll(10);
+        frameAfterNext.roll(3);
+
+        expect(frame.calculateScore(nextFrame, frameAfterNext)).toEqual(23);
+      });
+
+    });
+
   });
 
-  describe('knows when it is over', function() { 
-
-    it('after two rolls', function() {
-      rolls([2, 3]);
-
-      expect(frame.isOver()).toEqual(true);
-    });
-
-    it('after a strike', function() {
-      frame.roll(10);
-      
-      expect(frame.isOver()).toEqual(true);
-    });
+  describe('Validations', function() { 
 
     it("doesn't allow a third roll", function() {
       rolls([1,2]);
@@ -53,51 +83,7 @@ describe('Frame', function() {
     });
 
   });
-
-  describe("Awarding bonuses", function() {
-    var nextFrame;
-
-    beforeEach(function() {
-      nextFrame = new Frame();
-      nextFrame.roll(3);
-      nextFrame.roll(3);
-    });
-
-
-    describe("when it is a spare", function() {
-
-      it('awards itself bonus points equal to the score of the next roll', function() {
-        rolls([5,5]);
-
-        expect(frame.calculateScore(nextFrame)).toEqual(13);
-      });
-
-    });
-
-    describe("when it is a strike", function() {
-
-      it('awards itself bonus points equal to the score of the next two rolls', function() {
-        rolls([10]);
-
-        expect(frame.calculateScore(nextFrame)).toEqual(16);
-      });
-
-    });
-
-  });
-
-  it('knows it is a spare', function() {
-    rolls([5, 5]);
-
-    expect(frame.isSpare()).toEqual(true);
-  });
-
-  it('knows when it is a strike', function() {
-    rolls([10]);
-
-    expect(frame.isStrike()).toEqual(true);
-  });
-
+    
   function rolls(multiRolls) {
     multiRolls.forEach(function(roll) {
       frame.roll(roll);
