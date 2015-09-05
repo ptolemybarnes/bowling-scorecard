@@ -16,7 +16,7 @@ describe('Frame', function() {
 
   });
 
-  describe('knows it is over', function() { 
+  describe('knows when it is over', function() { 
 
     it('after two rolls', function() {
       rolls([2, 3]);
@@ -36,6 +36,12 @@ describe('Frame', function() {
       expect(function() { frame.roll(3) }).toThrow("No more rolls; frame is over");
     });
 
+    it("doesn't allow the score to go over 10", function() {
+      rolls([5]);
+
+      expect(function() { frame.roll(6) }).toThrow("You cannot knock down more than 10 pins");
+    });
+
   });
 
   describe('knows it is not over', function() {
@@ -45,6 +51,7 @@ describe('Frame', function() {
 
       expect(frame.isOver()).toEqual(false);
     });
+
   });
 
   it('knows it is a spare', function() {

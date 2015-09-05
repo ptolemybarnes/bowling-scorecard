@@ -5,7 +5,7 @@ var Frame = (function() {
   }
 
   Frame.prototype.roll = function(score) {
-    validateRoll(this.rolls);
+    validateRoll(this, score)
     this.rolls.push(score);
   }
 
@@ -27,11 +27,14 @@ var Frame = (function() {
     return (countNumberOfRolls(this.rolls) == 1 && this.calculateScore() === 10);
   }
 
-  // private methods. You must use 'self', rather than this.
+  // private methods.
 
-  function validateRoll(rolls) {
-    if (rolls.length == 2) {
+  function validateRoll(self, score) {
+    if (self.rolls.length == 2) {
       throw "No more rolls; frame is over";
+    }
+    if (self.calculateScore() + score > 10) {
+      throw "You cannot knock down more than 10 pins";
     }
   }
 
