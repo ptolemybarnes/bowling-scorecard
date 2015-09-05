@@ -13,7 +13,7 @@ describe('Frame', function() {
 
       expect(frame.calculateScore()).toEqual(8);
     });
-
+  
   });
 
   describe('knows when it is over', function() { 
@@ -50,6 +50,38 @@ describe('Frame', function() {
       frame.roll(3);
 
       expect(frame.isOver()).toEqual(false);
+    });
+
+  });
+
+  describe("Awarding bonuses", function() {
+    var nextFrame;
+
+    beforeEach(function() {
+      nextFrame = new Frame();
+      nextFrame.roll(3);
+      nextFrame.roll(3);
+    });
+
+
+    describe("when it is a spare", function() {
+
+      it('awards itself bonus points equal to the score of the next roll', function() {
+        rolls([5,5]);
+
+        expect(frame.calculateScore(nextFrame)).toEqual(13);
+      });
+
+    });
+
+    describe("when it is a strike", function() {
+
+      it('awards itself bonus points equal to the score of the next two rolls', function() {
+        rolls([10]);
+
+        expect(frame.calculateScore(nextFrame)).toEqual(16);
+      });
+
     });
 
   });
