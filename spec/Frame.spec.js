@@ -56,6 +56,14 @@ describe('Frame', function() {
 
     });
 
+    describe('when no rolls have been thrown', function() {
+
+      it('returns zero as the score', function() {
+        expect(frame.calculateScore(new NullFrame(), new NullFrame())).toEqual(0);
+      });
+
+    });
+
   });
 
   describe('Validations', function() { 

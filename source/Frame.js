@@ -1,7 +1,10 @@
 var Frame = (function() {
   
-  function Frame() {
-    this.rolls = [];
+  function Frame(bonusMode) {
+    this.rolls    = [];
+    this.maxRolls = 2;
+    this.maxScore = 10;
+    this.bonusMode = bonusMode || true;
   }
 
   Frame.prototype.roll = function(score) {
@@ -10,13 +13,15 @@ var Frame = (function() {
   }
 
   Frame.prototype.isOver = function() {
-    return (this.rolls.length > 1 || calculateBaseScore(this) === 10);
+    return (this.rolls.length > 1 || calculateBaseScore(this) === this.maxScore);
   }
 
   Frame.prototype.calculateScore = function(nextFrame, frameAfterNext) {
     var total = 0;
     total += calculateBaseScore(this);
-    total += calculateBonuses(this, nextFrame, frameAfterNext);
+    if (this.bonusMode) {
+      total += calculateBonuses(this, nextFrame, frameAfterNext);
+    }
 
     return total;
   };
@@ -51,10 +56,10 @@ var Frame = (function() {
   }
 
   function validateRoll(frame, score) {
-    if (frame.rolls.length == 2) {
+    if (frame.rolls.length == frame.maxRolls) {
       throw "No more rolls; frame is over";
     }
-    if (calculateBaseScore(frame) + score > 10) {
+    if (calculateBaseScore(frame) + score > frame.maxScore) {
       throw "You cannot knock down more than 10 pins";
     }
   }
@@ -64,12 +69,14 @@ var Frame = (function() {
   }
 
   function calculateBaseScore(frame) {
-    return frame.rolls[0] + (frame.rolls[1] || 0);
+    return [0].concat(frame.getRollsList()).reduce(function(sum, score) {
+      return sum + (score || 0);
+    });
   }
 
   function getNextTwoScores(nextFrame, frameAfterNext) {
     var rollsList = nextFrame.getRollsList().concat(frameAfterNext.getRollsList());
-    return calculateBaseScore({ rolls: rollsList });
+    return calculateBaseScore({ getRollsList: function() { return rollsList }})
   }
 
   return Frame;
