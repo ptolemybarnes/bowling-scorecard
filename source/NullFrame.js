@@ -7,3 +7,7 @@ NullFrame.prototype.calculateScore = function() {
 NullFrame.prototype.isNullFrame    = function() {
   return true;
 }
+
+NullFrame.prototype.getRollsList   = function() {
+  return [0, 0]
+}
