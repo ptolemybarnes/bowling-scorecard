@@ -17,6 +17,12 @@ describe("Scorecard Engine", function() {
     expect(scorecardEngine.calculateTotal()).toEqual(76);
   });
 
+  it('scores a near perfect game', function() {
+    registerScores([10, 10, 10, 10, 10, 10, 10, 10, 10, 5, 5, 5]);
+
+    expect(scorecardEngine.calculateTotal()).toEqual(270);
+  });
+
   it('scores a perfect game', function() {
     registerScores([10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]);
     

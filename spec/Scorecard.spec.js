@@ -25,6 +25,7 @@ describe("Scorecard", function() {
       expect(firstFrame.calculateScore).toHaveBeenCalledWith(frames.getFrame(1), frames.getFrame(2));
     });
 
+
   });
 
   function generateFramesWithScores(frameScores) {

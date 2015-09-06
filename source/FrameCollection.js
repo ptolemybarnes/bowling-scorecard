@@ -21,6 +21,10 @@ var FrameCollection = (function() {
     return this.getFrame(this.frames.length - 1);
   }
 
+  FrameCollection.prototype.countFrames = function() {
+    return this.frames.length;
+  }
+
   return FrameCollection;
 })();
 

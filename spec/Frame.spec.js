@@ -17,7 +17,7 @@ describe('Frame', function() {
 
         expect(frame.calculateScore(nextFrame, frameAfterNext)).toEqual(8);
       });
-    
+
     });
 
     describe("when it is a spare", function() {
@@ -86,6 +86,38 @@ describe('Frame', function() {
 
     it('after a single roll of less than 10', function() {
       frame.roll(3);
+
+      expect(frame.isOver()).toEqual(false);
+    });
+
+  });
+
+  describe('when is it the tenth frame', function() {
+
+    beforeEach(function() {
+      frame.setTenthFrame();
+    });
+
+    it('allows a bonus roll after a spare', function() {
+      rolls([5, 5, 5]);
+
+      expect(frame.calculateScore(new NullFrame(), new NullFrame())).toEqual(15);
+    });
+
+    it('is over after 2 rolls not adding up to 10', function() {
+      rolls([5, 4]);
+
+      expect(frame.isOver()).toEqual(true);
+    });
+
+    it('is not over after a single roll not add up to 10', function() {
+      rolls([5]);
+
+      expect(frame.isOver()).toEqual(false);
+    });
+
+    it('is not over after a strike', function() {
+      rolls([10]);
 
       expect(frame.isOver()).toEqual(false);
     });

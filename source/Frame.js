@@ -2,9 +2,7 @@ var Frame = (function() {
   
   function Frame(bonusMode) {
     this.rolls    = [];
-    this.maxRolls = 2;
-    this.maxScore = 10;
-    this.bonusMode = bonusMode || true;
+    setMaxRollsAndScore(this, (bonusMode || true));
   }
 
   Frame.prototype.roll = function(score) {
@@ -13,15 +11,15 @@ var Frame = (function() {
   }
 
   Frame.prototype.isOver = function() {
-    return (this.rolls.length > 1 || calculateBaseScore(this) === this.maxScore);
+    if (this.rolls.length >= this.maxRolls) { return true }
+    if (this.isTenthFrame && this.rolls.length > 1) { return (calculateBaseScore(this) < 10) }
+    else { return (calculateBaseScore(this) === this.maxScore) }
   }
 
   Frame.prototype.calculateScore = function(nextFrame, frameAfterNext) {
     var total = 0;
     total += calculateBaseScore(this);
-    if (this.bonusMode) {
-      total += calculateBonuses(this, nextFrame, frameAfterNext);
-    }
+    total += calculateBonuses(this, nextFrame, frameAfterNext);
 
     return total;
   };
@@ -33,13 +31,17 @@ var Frame = (function() {
   Frame.prototype.isNullFrame  = function() {
     return false;
   }
+
+  Frame.prototype.setTenthFrame = function() {
+    setMaxRollsAndScore(this, false);
+  }
   
   // private methods.
   
   function calculateBonuses(frame, nextFrame, frameAfterNext) {
     var bonusTotal = 0;
     if (isSpare(frame)) {
-      bonusTotal += nextFrame.rolls[0];
+      bonusTotal += nextFrame.getRollsList()[0];
     }
     if (isStrike(frame)) {
       bonusTotal += getNextTwoScores(nextFrame, frameAfterNext);
@@ -76,7 +78,20 @@ var Frame = (function() {
 
   function getNextTwoScores(nextFrame, frameAfterNext) {
     var rollsList = nextFrame.getRollsList().concat(frameAfterNext.getRollsList());
-    return calculateBaseScore({ getRollsList: function() { return rollsList }})
+    return calculateBaseScore({ getRollsList: function() { return rollsList.slice(0, 2) }})
+  }
+
+  function setMaxRollsAndScore(frame, bonusMode) {
+    if (bonusMode) {
+      frame.maxRolls     = 2;
+      frame.maxScore     = 10;
+      frame.isTenthFrame = false
+    }
+    else {
+      frame.maxRolls     = 3;
+      frame.maxScore     = 30;
+      frame.isTenthFrame = true
+    }
   }
 
   return Frame;

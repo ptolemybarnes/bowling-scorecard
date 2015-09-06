@@ -6,7 +6,8 @@ var ScorecardEngine = (function() {
 
   ScorecardEngine.prototype.addScore = function(value) {
     if(isFrameAddable(this)) {
-      this.frames.push(new Frame());
+      var frame = setFrameType(this);
+      this.frames.push(frame);
     }
     this.frames.getLastFrame().roll(value);
   }
@@ -18,6 +19,14 @@ var ScorecardEngine = (function() {
 
   function isFrameAddable(engine) {
     return (engine.frames.getLastFrame().isOver());
+  }
+
+  function setFrameType(engine) {
+    var frame = new Frame();
+    if (engine.frames.countFrames() == 9) {
+      frame.setTenthFrame();
+    }
+    return frame;
   }
 
   return ScorecardEngine;
