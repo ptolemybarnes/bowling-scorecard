@@ -24,6 +24,10 @@ var Frame = (function() {
   Frame.prototype.getRollsList = function() {
     return this.rolls.slice(0, this.rolls.length);
   }
+
+  Frame.prototype.isNullFrame  = function() {
+    return false;
+  }
   
   // private methods.
   

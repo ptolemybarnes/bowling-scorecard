@@ -4,8 +4,9 @@ var Scorecard = (function() {
   }
 
   Scorecard.prototype.calculateTotal = function() {
-    return [0].concat(this.frames).reduce(function(sum, frame, index, frames) {
-      return sum + frame.calculateScore(frames[index + 1], frames[index + 2]);
+    var frames = this.frames;
+    return this.frames.reduce(function(sum, frame, index, _) {
+      return sum + frame.calculateScore(frames.getFrame(index), frames.getFrame(index + 1));
     });
   }
   
