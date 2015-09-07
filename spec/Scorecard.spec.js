@@ -25,6 +25,13 @@ describe("Scorecard", function() {
       expect(firstFrame.calculateScore).toHaveBeenCalledWith(frames.getFrame(1), frames.getFrame(2));
     });
 
+  });
+
+  describe("Printing scorecard", function() {
+
+    it("prints a scorecard", function() {
+      var frames = generatesFramesWithScores([[5, 5], [3, 3], [7, 2]];
+    });
 
   });
 

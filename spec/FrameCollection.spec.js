@@ -5,7 +5,7 @@ describe("FrameCollection", function() {
     frames = new FrameCollection();
   });
 
-  it("behaves like an array", function() {
+  it("retrieves an individual frame", function() {
     frame = {};
     frames.push(frame);
 

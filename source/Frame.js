@@ -20,7 +20,6 @@ var Frame = (function() {
     var total = 0;
     total += calculateBaseScore(this);
     total += calculateBonuses(this, nextFrame, frameAfterNext);
-
     return total;
   };
 
@@ -35,8 +34,6 @@ var Frame = (function() {
   Frame.prototype.setTenthFrame = function() {
     setMaxRollsAndScore(this, false);
   }
-  
-  // private methods.
   
   function calculateBonuses(frame, nextFrame, frameAfterNext) {
     var bonusTotal = 0;

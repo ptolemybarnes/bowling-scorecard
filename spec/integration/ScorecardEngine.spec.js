@@ -8,10 +8,10 @@ describe("Scorecard Engine", function() {
   it('scores a game without bonuses', function() {
     registerScores([3, 3, 3, 4, 5, 4, 6, 3]);
 
-    expect(scorecardEngine.calculateTotal()).toEqual(3 + 3 + 3 + 4 + 5 + 4 + 6 + 3);
+    expect(scorecardEngine.calculateTotal()).toEqual(31);
   })
 
-  it('scores a game with bonuses', function() {
+  it('scores a game with some bonuses', function() {
     registerScores([2,2, 6, 4, 9, 0, 4, 6, 10, 4, 3])
 
     expect(scorecardEngine.calculateTotal()).toEqual(76);
