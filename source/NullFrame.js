@@ -1,13 +1,17 @@
-function NullFrame() {}
+var NullFrame = (function() {
+  function NullFrame() {}
 
-NullFrame.prototype.calculateScore = function() {
-  return 0;
-}
+  NullFrame.prototype.calculateScore = function() {
+    return 0;
+  }
 
-NullFrame.prototype.isNullFrame    = function() {
-  return true;
-}
+  NullFrame.prototype.isNullFrame    = function() {
+    return true;
+  }
 
-NullFrame.prototype.getRollsList   = function() {
-  return [0, 0]
-}
+  NullFrame.prototype.getRollsList   = function() {
+    return [0, 0]
+  }
+
+  return NullFrame;
+})();
