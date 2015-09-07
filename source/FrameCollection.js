@@ -1,4 +1,5 @@
 var FrameCollection = (function() {
+  
   function FrameCollection(frames) {
     this.frames    = frames || [];
     this.maxFrames = 10;

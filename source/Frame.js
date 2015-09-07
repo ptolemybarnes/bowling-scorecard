@@ -68,9 +68,9 @@ var Frame = (function() {
   }
 
   function calculateBaseScore(frame) {
-    return [0].concat(frame.getRollsList()).reduce(function(sum, score) {
-      return sum + (score || 0);
-    });
+    return frame.getRollsList().reduce(function(sum, score) {
+      return sum + score;
+    }, 0);
   }
 
   function getNextTwoScores(nextFrame, frameAfterNext) {
