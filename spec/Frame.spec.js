@@ -34,7 +34,7 @@ describe('Frame', function() {
 
     describe("when it is a strike followed by a non-strike", function() {
 
-      it('awards itself bonus points equal to the base score of the next frame', function() {
+      it('awards itself bonus points equal to the base score of the next roll', function() {
         rolls([10]);
         nextFrame.roll(3);
         nextFrame.roll(3);
@@ -46,7 +46,7 @@ describe('Frame', function() {
 
     describe("when it is a strike followed by another strike", function() {
 
-      it('awards itself bonus points equal to the base score of the next two frames', function() {
+      it('awards itself bonus points equal to the base score of the next two rolls', function() {
         frame.roll(10);
         nextFrame.roll(10);
         frameAfterNext.roll(3);
